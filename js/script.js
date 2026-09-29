@@ -3,8 +3,8 @@
 // Contoh: 0812-3456-7890 -> "6281234567890"
 // Kalau diisi, pesanan langsung terisi otomatis di chat WhatsApp.
 var WA_NUMBER = "6282279703234";
-var WA_LINK = "https://wa.me/qr/6LZNCNUOXRJXO1"; // dipakai kalau WA_NUMBER kosong
-var EMAIL = "bungarahmadani267@gmail.com";
+var WA_LINK   = "https://wa.me/qr/6LZNCNUOXRJXO1";   // dipakai kalau WA_NUMBER kosong
+var EMAIL     = "bungarahmadani267@gmail.com";
 
 document.getElementById("yr").textContent = new Date().getFullYear();
 
@@ -21,23 +21,13 @@ if (WA_NUMBER) {
 // Susun teks pesanan dari isi form
 function buatPesan() {
   var f = new FormData(form);
-  return (
-    "Halo, saya mau pesan website.\n\n" +
-    "Nama: " +
-    f.get("nama") +
-    "\n" +
-    "Bisnis/organisasi: " +
-    (f.get("bisnis") || "-") +
-    "\n" +
-    "Layanan: " +
-    f.get("layanan") +
-    "\n" +
-    "Jenis website: " +
-    (f.get("jenis") || "-") +
-    "\n" +
-    "Kebutuhan: " +
-    (f.get("pesan") || "-")
-  );
+  return "Halo, saya mau pesan website.\n\n" +
+    "Nama: " + f.get("nama") + "\n" +
+    "Bisnis/organisasi: " + (f.get("bisnis") || "-") + "\n" +
+    "Layanan: " + f.get("layanan") + "\n" +
+    "Jenis website: " + (f.get("jenis") || "-") + "\n" +
+    "Paket: " + (f.get("paket") || "-") + "\n" +
+    "Kebutuhan: " + (f.get("pesan") || "-");
 }
 
 // Salin teks ke clipboard (dengan cadangan untuk browser yang menolak)
@@ -50,9 +40,7 @@ function salin(teks) {
     t.value = teks;
     document.body.appendChild(t);
     t.select();
-    try {
-      document.execCommand("copy");
-    } catch (e) {}
+    try { document.execCommand("copy"); } catch (e) {}
     document.body.removeChild(t);
     ok();
   });
@@ -65,19 +53,14 @@ form.addEventListener("submit", function (e) {
 
   if (WA_NUMBER) {
     // pesan langsung terisi di chat
-    window.open(
-      "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(pesan),
-      "_blank",
-    );
-    hint.textContent =
-      "WhatsApp dibuka dengan pesan yang sudah terisi. Tinggal tekan kirim.";
+    window.open("https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(pesan), "_blank");
+    hint.textContent = "WhatsApp dibuka dengan pesan yang sudah terisi. Tinggal tekan kirim.";
     return;
   }
 
   // tanpa nomor: salin pesan, lalu buka chat lewat link QR
   salin(pesan).then(function () {
-    hint.textContent =
-      "Pesanan sudah disalin. Di tab WhatsApp yang terbuka, lanjutkan ke chat, lalu tempel (Ctrl+V) dan kirim.";
+    hint.textContent = "Pesanan sudah disalin. Di tab WhatsApp yang terbuka, lanjutkan ke chat, lalu tempel (Ctrl+V) dan kirim.";
     window.open(WA_LINK, "_blank");
   });
 });
@@ -85,15 +68,22 @@ form.addEventListener("submit", function (e) {
 // Kirim lewat email: membuka Gmail di browser dengan isi terisi otomatis
 document.getElementById("btnEmail").addEventListener("click", function () {
   if (!form.reportValidity()) return;
-  var url =
-    "https://mail.google.com/mail/?view=cm&fs=1" +
-    "&to=" +
-    encodeURIComponent(EMAIL) +
-    "&su=" +
-    encodeURIComponent("Pesan website") +
-    "&body=" +
-    encodeURIComponent(buatPesan());
+  var url = "https://mail.google.com/mail/?view=cm&fs=1" +
+    "&to=" + encodeURIComponent(EMAIL) +
+    "&su=" + encodeURIComponent("Pesan website") +
+    "&body=" + encodeURIComponent(buatPesan());
   window.open(url, "_blank");
-  hint.textContent =
-    "Gmail dibuka dengan pesan yang sudah terisi. Tinggal tekan kirim.";
+  hint.textContent = "Gmail dibuka dengan pesan yang sudah terisi. Tinggal tekan kirim.";
+});
+
+// Tombol "Pesan paket ini": isi form otomatis sesuai paket yang dipilih
+var picked = document.getElementById("picked");
+document.querySelectorAll(".pick").forEach(function (btn) {
+  btn.addEventListener("click", function () {
+    form.elements.jenis.value = btn.dataset.jenis;
+    form.elements.layanan.value = "Pembuatan website baru";
+    document.getElementById("paket").value = btn.dataset.paket;
+    picked.textContent = "Paket dipilih: " + btn.dataset.paket;
+    picked.hidden = false;
+  });
 });
