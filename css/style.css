@@ -6,6 +6,7 @@
    3. Navbar               8. Contact & form
    4. Home (hero)          9. Footer & tombol WA
    5. About               10. Responsive & aksesibilitas
+   (6b. Harga ada setelah Service)
    ========================================================== */
 
 /* ---------- 1. Variabel & reset ---------- */
@@ -318,6 +319,71 @@ nav {
 }
 .steps b { display: block; color: var(--navy); }
 .steps span { font-size: .92rem; color: var(--muted); }
+
+/* ---------- 6b. Harga ---------- */
+.price-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 26px;
+  margin-top: 40px;
+}
+
+.price {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 26px 26px;
+  border: 2px solid var(--navy);
+  border-radius: 20px;
+  box-shadow: 5px 5px 0 var(--navy);
+  transition: transform .2s, box-shadow .2s;
+}
+.price:hover { transform: translate(-3px, -3px); box-shadow: 8px 8px 0 var(--navy); }
+.price:nth-child(1) { background: var(--mint); }
+.price:nth-child(2) { background: var(--sky); }
+.price:nth-child(3) { background: var(--sand); }
+
+.badge {
+  position: absolute;
+  top: -15px;
+  right: 18px;
+  padding: 3px 14px;
+  font-size: .85rem;
+  font-weight: 800;
+  color: var(--navy);
+  background: var(--peach);
+  border: 2px solid var(--navy);
+  border-radius: 999px;
+  transform: rotate(3deg);
+}
+
+.price h3 { font-size: 1.3rem; }
+.price .for { min-height: 3em; margin: 4px 0 14px; font-size: .92rem; color: #3b4368; }
+.price .old { font-size: .95rem; color: var(--muted); text-decoration: line-through; }
+.price .now { margin-bottom: 16px; font-size: 2.2rem; font-weight: 800; line-height: 1.1; color: var(--navy); }
+
+.price ul { flex: 1; margin-bottom: 22px; padding: 0; list-style: none; }
+.price li { position: relative; padding: 4px 0 4px 26px; font-size: .93rem; }
+.price li::before {
+  content: "\2713";
+  position: absolute;
+  left: 0;
+  font-weight: 800;
+  color: var(--blue);
+}
+.price .btn { justify-content: center; }
+
+.price-note { margin-top: 28px; font-size: .95rem; color: var(--muted); }
+.price-note a { font-weight: 600; color: var(--blue); text-decoration: underline; }
+
+.picked {
+  padding: 8px 14px;
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--navy);
+  background: var(--mint);
+  border-radius: 10px;
+}
 
 /* ---------- 7. Project ---------- */
 .proj-grid {
